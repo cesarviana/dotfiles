@@ -1,0 +1,7 @@
+[user]
+	name = Cesar Viana
+	email = 6049357+cesarviana@users.noreply.github.com
+[core]
+	editor = code --wait
+[commit]
+	gpgsign = true
