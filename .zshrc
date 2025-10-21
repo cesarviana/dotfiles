@@ -76,6 +76,8 @@ source $ZSH/oh-my-zsh.sh
 
 source ~/.profile
 
+source .env
+
 # User configuration
 
 # export MANPATH="/usr/local/man:$MANPATH"
