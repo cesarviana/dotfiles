@@ -76,7 +76,7 @@ source $ZSH/oh-my-zsh.sh
 
 source ~/.profile
 
-source .env
+source ~/.private-profile
 
 # User configuration
 
@@ -107,13 +107,15 @@ alias cdapp="cd /home/cesarviana/workspace/alyne/app"
 alias cdapi="cd /home/cesarviana/workspace/alyne/api"
 alias cdks="cdapi && test/kickStartDB"
 
+alias mongoimport="mongoimport --host /tmp/mongodb/mongodb-27017.sock"
+
 alias gcdv="git checkout develop"
 alias gsw-="git switch -"
 alias ppdb="yarn popDB"
 alias dpdb="yarn dumpDB"
 alias ytq="time yarn test --grep 'uestionnaire'"
 alias grb="git rebase -i origin/develop"
-alias nyc="npx nyc --reporter=lcov --reporter=html --reporter=text-summary node ./node_modules/mocha/bin/mocha --require test/bootstraptests.js \"test/integration/**/*.test.js\" \"api/**/*.test.js\" --exit --no-clean --grep"
+alias nyc="TZ='Europe Standard Time' npx nyc --reporter=lcov --reporter=html --reporter=text-summary node ./node_modules/mocha/bin/mocha --require test/bootstraptests.js \"test/integration/**/*.test.js\" \"api/**/*.test.js\" --exit --no-clean --grep"
 
 export NVM_DIR="$HOME/.nvm"
 [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
@@ -121,8 +123,8 @@ export NVM_DIR="$HOME/.nvm"
 export API_PATH="/home/cesarviana/workspace/alyne/api"
 
 alias e2erebuild="yarn run test:e2e:api_rebuild"
-alias e2erun="yarn run cy:run"
-alias e2eopen="yarn run cy:open"
+alias e2erun="yarn run pw:run"
+alias e2eopen="yarn run pw:open"
 
 alias appstart="cdapp && bun ember s"
 alias apistart="cdapi && npx pm2 restart ecosystem.json && npx pm2 logs --raw | npx pino-pretty -S --colorize"
@@ -131,11 +133,12 @@ alias startservices="sudo service mongod start && sudo service rabbitmq-server s
 
 alias dotfiles='/usr/bin/git --git-dir=/home/cesarviana/dotfiles --work-tree=/home/cesarviana'
 
+alias ollama='docker exec -it ollama ollama'
+
 e2estart () {
 	cdapp
 	echo "stoping services..."
-	sudo service mongod stop                                                                                        23-10-19 - 15:09:35
-	sudo service rabbitmq-server stop
+	docker container stop mongodb                                                                                        23-10-19 - 15:09:35
 	sudo service redis-server stop
 
 	echo "starting e2e..."
@@ -148,8 +151,7 @@ e2estop () {
 	yarn run test:e2e:api_stop
 
 	echo "restarting services..."
-	sudo service mongod restart                                                                                        23-10-19 - 15:09:35
-	sudo service rabbitmq-server restart
+	docker container start mongodb                                                                                      23-10-19 - 15:09:35
 	sudo service redis-server restart
 }
 
@@ -167,3 +169,4 @@ ppcd () {
 if [ "$VSCODE_INJECTION" = "1" ]; then
     export EDITOR="code --wait" # or 'code-insiders' if you're using VS Code Insiders
 fi
+export HISTTIMEFORMAT="%d/%m/%y %T "
