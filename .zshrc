@@ -134,6 +134,7 @@ alias startservices="sudo service mongod start && sudo service rabbitmq-server s
 alias dotfiles='/usr/bin/git --git-dir=/home/cesarviana/dotfiles --work-tree=/home/cesarviana'
 
 alias ollama='docker exec -it ollama ollama'
+alias promptfoo='npx promptfoo@latest'
 
 e2estart () {
 	cdapp
@@ -158,7 +159,7 @@ e2estop () {
 ppcd () {
     local dump_dir=~/Downloads/dump
     cd $dump_dir
-    sh import.sh
+    sh import_enhanced.sh
     cd -
 }
 
@@ -170,3 +171,5 @@ if [ "$VSCODE_INJECTION" = "1" ]; then
     export EDITOR="code --wait" # or 'code-insiders' if you're using VS Code Insiders
 fi
 export HISTTIMEFORMAT="%d/%m/%y %T "
+
+cd ~/workspace/alyne/mongodb8_3_2 && docker compose up -d && -
